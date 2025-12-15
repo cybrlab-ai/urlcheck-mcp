@@ -1,0 +1,49 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-11-25/server.schema.json",
+  "name": "cybrlab-ai/url-scanner",
+  "description": "Malicious URL detection for Safe Agentic Browsing.",
+  "version": "0.1.0",
+  "publisher": {
+    "name": "CybrLab AI",
+    "url": "https://cybrlab.ai"
+  },
+  "repository": {
+    "source": "github",
+    "url": "https://github.com/cybrlab-ai/url-scanner-mcp"
+  },
+  "license": "Apache-2.0",
+  "privacyPolicyUrl": "https://cybrlab.ai/privacy-policy",
+  "tosUrl": "https://cybrlab.ai/terms-of-use",
+  "remotes": [
+    {
+      "url": "https://urlcheck.ai/mcp",
+      "transport": {
+        "type": "streamable-http",
+        "endpoint": "/mcp"
+      },
+      "headers": [
+        {
+          "name": "X-API-Key",
+          "description": "API key for authentication. Contact contact@cybrlab.ai to obtain one.",
+          "is_required": true,
+          "is_secret": true
+        }
+      ]
+    }
+  ],
+  "capabilities": {
+    "tools": {
+      "listChanged": false
+    },
+    "logging": {}
+  },
+  "tags": [
+    "security",
+    "url-scanner",
+    "malware-detection",
+    "cybersecurity",
+    "safe-browsing",
+    "ai-agents",
+    "threat-intelligence"
+  ]
+}
