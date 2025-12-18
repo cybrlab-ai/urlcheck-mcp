@@ -298,10 +298,39 @@ When `status` is `completed`, the `result` field contains:
   "result": {
     "classification": "Malicious",
     "risk_score": 0.87,
-    "confidence": 0.92
+    "confidence": 0.92,
+    "analysis_complete": true
   }
 }
 ```
+
+##### Result Fields
+
+| Field               | Type     | Description                                                                     |
+|---------------------|----------|---------------------------------------------------------------------------------|
+| `classification`    | string   | Risk classification: `Malicious`, `Suspicious`, `Undetected`, `Harmless`        |
+| `risk_score`        | number   | Threat probability from 0.0 (safe) to 1.0 (dangerous)                           |
+| `confidence`        | number   | Classification confidence from 0.0 to 1.0                                       |
+| `analysis_complete` | boolean  | Whether all scanners completed successfully                                     |
+| `partial_analysis`  | string[] | Scanner components that failed (only present when `analysis_complete` is false) |
+
+##### Partial Analysis Example
+
+When some scanners fail (e.g., SSL connection timeout), the result indicates which components are missing:
+
+```json
+{
+  "result": {
+    "classification": "Suspicious",
+    "risk_score": 0.65,
+    "confidence": 0.75,
+    "analysis_complete": false,
+    "partial_analysis": ["ssl"]
+  }
+}
+```
+
+**Interpretation:** The scan completed but SSL certificate analysis failed. The classification is based on available data only. Consumers should treat partial results with appropriate caution.
 
 #### Failure Response Structure
 
@@ -651,6 +680,7 @@ When a scan job fails during execution, the `job_status` response contains an `e
 | `DOM_DETACHED`              | Page closed via script        | No        | treat_as_suspicious |
 | `BROWSER_INIT_FAILED`       | Browser initialization failed | Yes (30s) | retry_backoff       |
 | `BROWSER_UNKNOWN_NET_ERROR` | Unknown network error         | Yes (30s) | retry_backoff       |
+| `TRANSPORT_TIMEOUT`         | Browser communication timeout | Yes (60s) | retry_backoff       |
 
 #### System & Queue Errors
 
