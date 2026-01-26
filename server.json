@@ -1,8 +1,10 @@
 {
-  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-11-25/server.schema.json",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "cybrlab-ai/url-scanner",
+  "title": "CybrLab AI URL Security Scanner",
   "description": "Malicious URL detection for Safe Agentic Browsing.",
   "version": "0.1.0",
+  "websiteUrl": "https://urlcheck.ai",
   "publisher": {
     "name": "CybrLab AI",
     "url": "https://cybrlab.ai"
@@ -16,24 +18,42 @@
   "tosUrl": "https://cybrlab.ai/terms-of-use",
   "remotes": [
     {
+      "type": "streamable-http",
       "url": "https://urlcheck.ai/mcp",
-      "transport": {
-        "type": "streamable-http",
-        "endpoint": "/mcp"
-      },
       "headers": [
         {
           "name": "X-API-Key",
           "description": "API key for authentication. Contact contact@cybrlab.ai to obtain one.",
-          "is_required": true,
-          "is_secret": true
+          "isRequired": true,
+          "isSecret": true,
+          "placeholder": "<your-api-key>"
         }
       ]
+    }
+  ],
+  "tools": [
+    {
+      "name": "url_scanner_scan",
+      "description": "Analyze a URL for security threats including phishing, malware, and suspicious patterns. Returns risk score, confidence, and agent access guidance.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The URL to analyze. Must be HTTP or HTTPS. If no scheme provided, https:// is assumed."
+          }
+        },
+        "required": ["url"]
+      }
     }
   ],
   "capabilities": {
     "tools": {
       "listChanged": false
+    },
+    "tasks": {
+      "list": true,
+      "cancel": true
     },
     "logging": {}
   },

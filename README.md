@@ -1,8 +1,6 @@
 # URL Security Scanner MCP Server
 
-> **Malicious URL Detection for Safe Agentic Browsing**
->
-> High-accuracy MCP-native URL scanner for secure agentic browsing, powered by ML classification and browser automation.
+> **High-accuracy MCP-native URL scanner for Safe Agentic Browsing**
 
 **Publisher:** [CybrLab AI](https://cybrlab.ai) | **Service:** [urlcheck.ai](https://urlcheck.ai)
 
@@ -12,13 +10,9 @@
 
 The URL Security Scanner is an MCP (Model Context Protocol) server that provides AI agents with the ability to analyze URLs for malicious content and security threats before navigation.
 
-### Key Features
+## Important Notice
 
-- **ML Classifier**: Proprietary ML model trained to detect known malicious patterns and generalize to novel(Zero-Day) threats through behavioral/feature-based analysis
-- **Browser Automation**: Full page rendering and dynamic content/network analysis via headless browser
-- **Brand Impersonation Detection**: Identifies fraudulent pages impersonating brands
-- **Heuristics Engine**: Rule-based detection using indicators of compromise and threat signatures
-- **GenAI Analysis**: Optional LLM-based reasoning for edge cases requiring contextual analysis
+This tool is intended for authorized security assessment only. Use it solely on systems or websites that you own or for which you have got explicit permission to assess. Any unauthorized, unlawful, or malicious use is strictly prohibited. You are responsible for ensuring compliance with all applicable laws, regulations, and contractual obligations.
 
 ### Use Cases
 
@@ -48,10 +42,10 @@ Add to your MCP client configuration:
 }
 ```
 
-### 2. Initialize Session
+### 2. Optional: Initialize Session (stateful mode only)
 
 ```bash
-# First, initialize a session (required before any other requests)
+# Only required if the server is running in stateful mode
 curl -X POST https://urlcheck.ai/mcp \
   -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
@@ -71,33 +65,49 @@ curl -X POST https://urlcheck.ai/mcp \
 
 ### 3. Start a Scan
 
+`url_scanner_scan` supports two execution modes:
+- **Task-augmented (recommended)**: Include the `task` parameter for async execution
+- **Direct**: Omit the `task` parameter for synchronous execution
+
 ```bash
-# Use the Mcp-Session-Id from the initialize response
 curl -X POST https://urlcheck.ai/mcp \
   -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
   -H "MCP-Protocol-Version: 2025-06-18" \
-  -H "Mcp-Session-Id: YOUR_SESSION_ID" \
   -H "X-API-Key: YOUR_API_KEY" \
   -d '{
     "jsonrpc": "2.0",
     "id": 2,
     "method": "tools/call",
     "params": {
-      "name": "url_scanner.scan",
+      "name": "url_scanner_scan",
       "arguments": {
         "url": "https://example.com"
+      },
+      "task": {
+        "ttl": 720000
       }
     }
   }'
+# If stateful mode is enabled, include: -H "Mcp-Session-Id: YOUR_SESSION_ID"
 ```
 
-Response:
+Response (task submitted):
 ```json
 {
-  "job_id": "550e8400-e29b-41d4-a716-446655440000",
-  "status": "queued",
-  "estimated_wait_secs": 30
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "task": {
+      "taskId": "550e8400-e29b-41d4-a716-446655440000",
+      "status": "working",
+      "statusMessage": "Queued for processing",
+      "createdAt": "2026-01-18T12:00:00Z",
+      "lastUpdatedAt": "2026-01-18T12:00:00Z",
+      "ttl": 720000,
+      "pollInterval": 2000
+    }
+  }
 }
 ```
 
@@ -108,31 +118,44 @@ curl -X POST https://urlcheck.ai/mcp \
   -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
   -H "MCP-Protocol-Version: 2025-06-18" \
-  -H "Mcp-Session-Id: YOUR_SESSION_ID" \
   -H "X-API-Key: YOUR_API_KEY" \
   -d '{
     "jsonrpc": "2.0",
     "id": 3,
-    "method": "tools/call",
+    "method": "tasks/result",
     "params": {
-      "name": "url_scanner.job_status",
-      "arguments": {
-        "job_id": "550e8400-e29b-41d4-a716-446655440000"
-      }
+      "taskId": "550e8400-e29b-41d4-a716-446655440000"
     }
   }'
+# If stateful mode is enabled, include: -H "Mcp-Session-Id: YOUR_SESSION_ID"
+```
+
+Response (completed task with agent directive):
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "result": {
+    "contentType": "application/json",
+    "value": {
+      "risk_score": 0.05,
+      "confidence": 0.95,
+      "analysis_complete": true,
+      "agent_access_directive": "ALLOW",
+      "agent_access_reason": "clean"
+    },
+    "summary": "URL scan completed"
+  }
+}
 ```
 
 ---
 
 ## Available Tools
 
-| Tool                      | Description                   |
-|---------------------------|-------------------------------|
-| `url_scanner.scan`        | Start async URL security scan |
-| `url_scanner.job_status`  | Poll for scan results         |
-| `url_scanner.cancel_job`  | Cancel a running scan         |
-| `url_scanner.queue_stats` | Get queue statistics          |
+| Tool               | Description                      | Execution Modes             |
+|--------------------|----------------------------------|-----------------------------|
+| `url_scanner_scan` | Analyze URL for security threats | Direct (sync), Task (async) |
 
 See [Full API Documentation](docs/API.md) for detailed schemas and examples.
 
@@ -148,20 +171,15 @@ See [Authentication Guide](docs/AUTHENTICATION.md) for details on getting API ke
 
 ## Technical Specifications
 
-| Property             | Value                     |
-|----------------------|---------------------------|
-| Protocol             | MCP 2025-06-18            |
-| Transport            | Streamable HTTP           |
-| Endpoint             | `https://urlcheck.ai/mcp` |
-| Typical Scan Time    | 20-60 seconds             |
-| Supported Schemes    | HTTP, HTTPS               |
-| Max URL Length       | 2048 characters           |
-
-### Input Validation
-
-URLs are validated before processing with comprehensive security checks including scheme validation, injection prevention, and internal network access controls.
-
-Invalid URLs return JSON-RPC error code `-32602` (Invalid params). See [API Documentation](docs/API.md#url-validation) for details.
+| Property          | Value                     |
+|-------------------|---------------------------|
+| MCP Spec          | 2025-06-18                |
+| Client Protocol   | 2025-06-18                |
+| Transport         | Streamable HTTP           |
+| Endpoint          | `https://urlcheck.ai/mcp` |
+| Typical Scan Time | Varies by target          |
+| Supported Schemes | HTTP, HTTPS               |
+| Max URL Length    | Enforced by server        |
 
 ---
 
@@ -177,4 +195,4 @@ Invalid URLs return JSON-RPC error code `-32602` (Invalid params). See [API Docu
 
 Apache License 2.0 - See [LICENSE](LICENSE) for details.
 
-Copyright 2025 CybrLab AI
+Copyright CybrLab AI

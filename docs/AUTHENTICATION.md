@@ -19,12 +19,13 @@ Content-Type: application/json
 Accept: application/json, text/event-stream
 X-API-Key: your-api-key-here
 MCP-Protocol-Version: 2025-06-18
-Mcp-Session-Id: your-session-id
 
 {...}
 ```
 
-### curl Example (Initialize Session)
+**Stateful mode only:** If `server.stateful_mode = true`, include `Mcp-Session-Id` header after `initialize`.
+
+### curl Example (Initialize Session - stateful mode only)
 
 ```bash
 # First request: initialize (no session ID needed yet)
@@ -45,10 +46,10 @@ curl -X POST https://urlcheck.ai/mcp \
 # Response includes Mcp-Session-Id header - save it!
 ```
 
-### curl Example (Subsequent Requests)
+### curl Example (Subsequent Requests - stateful mode only)
 
 ```bash
-# All requests after initialize require session ID and protocol version
+# All non-initialize requests require protocol version; session ID is required only in stateful mode
 curl -X POST https://urlcheck.ai/mcp \
   -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
@@ -58,11 +59,8 @@ curl -X POST https://urlcheck.ai/mcp \
   -d '{
     "jsonrpc": "2.0",
     "id": 2,
-    "method": "tools/call",
-    "params": {
-      "name": "url_scanner.queue_stats",
-      "arguments": {}
-    }
+    "method": "tasks/list",
+    "params": {}
   }'
 ```
 
@@ -85,63 +83,25 @@ Contact us for evaluation keys with limited quotas for testing purposes.
 
 ## Authentication Errors
 
-Authentication failures return **plain HTTP responses** (not JSON-RPC):
+Authentication failures return **plain HTTP responses** (not JSON-RPC). The
+response body is empty.
 
-| HTTP Status | Response Type | Body                                              | Description                      |
-|-------------|---------------|---------------------------------------------------|----------------------------------|
-| 401         | Plain text    | `missing api key`                                 | No `X-API-Key` header provided   |
-| 401         | Plain text    | `invalid api key`                                 | API key not recognized           |
-| 429         | Plain text    | `too many failed attempts, retry after X seconds` | Brute-force protection triggered |
+| HTTP Status | Response Type | Body        | Description                      |
+|-------------|---------------|-------------|----------------------------------|
+| 401         | Empty body    | n/a         | Missing/invalid/expired API key  |
+| 403         | Empty body    | n/a         | Origin or IP blocked             |
+| 429         | Empty body    | n/a         | Transport rate limited           |
 
-### Error Response Examples
+### Error Response Example
 
 **Missing API Key (401):**
 ```
 HTTP/1.1 401 Unauthorized
 Content-Type: text/plain
 
-missing api key
 ```
 
-**Invalid API Key (401):**
-```
-HTTP/1.1 401 Unauthorized
-Content-Type: text/plain
-
-invalid api key
-```
-
-**Brute-Force Protection (429):**
-```
-HTTP/1.1 429 Too Many Requests
-Content-Type: text/plain
-Retry-After: 60
-
-too many failed attempts, retry after 60 seconds
-```
-
-> **Note:** API rate limits (quota exceeded after successful auth) return JSON-RPC errors with code `1022` and include a `Retry-After` header. See the [API Reference](./API.md#rate-limits--quotas) for details.
-
----
-
-## Best Practices
-
-1. **Never expose API keys** in client-side code or public repositories
-2. **Implement retry logic** for rate limit errors (429)
-3. **Monitor queue capacity** via `url_scanner.queue_stats` tool before submitting jobs
-
-### Environment Variable Example
-
-```bash
-export URLCHECK_API_KEY="your-api-key-here"
-```
-
-```python
-import os
-
-api_key = os.environ.get("URLCHECK_API_KEY")
-headers = {"X-API-Key": api_key}
-```
+> **Note:** Per-key task quota errors return JSON-RPC error code `-32029`. Transport-level rate limits return HTTP 429 without a JSON-RPC body. See the [API Reference](./API.md#rate-limits--quotas) for details.
 
 ---
 
