@@ -2,7 +2,7 @@
 
 > How to get and use API keys for the URL Security Scanner MCP Server
 
-**Publisher:** [CybrLab AI](https://cybrlab.ai) | **Service:** [urlcheck.ai](https://urlcheck.ai)
+**Publisher:** [CybrLab AI](https://cybrlab.ai) | **Service:** [urlcheck.ai](https://urlcheck.dev)
 
 ---
 

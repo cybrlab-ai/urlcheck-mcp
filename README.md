@@ -2,7 +2,7 @@
 
 > **High-accuracy MCP-native URL scanner for Safe Agentic Browsing**
 
-**Publisher:** [CybrLab AI](https://cybrlab.ai) | **Service:** [urlcheck.ai](https://urlcheck.ai)
+**Publisher:** [CybrLab AI](https://cybrlab.ai) | **Service:** [urlcheck.ai](https://urlcheck.dev)
 
 ---
 
@@ -186,7 +186,7 @@ See [Authentication Guide](docs/AUTHENTICATION.md) for details on getting API ke
 ## Support
 
 - **Publisher**: [CybrLab AI](https://cybrlab.ai)
-- **Service**: [urlcheck.ai](https://urlcheck.ai)
+- **Service**: [urlcheck.ai](https://urlcheck.dev)
 - **Email**: contact@cybrlab.ai
 
 ---

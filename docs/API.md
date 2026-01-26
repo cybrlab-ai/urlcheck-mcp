@@ -2,7 +2,7 @@
 
 > **High-accuracy MCP-native URL scanner for Safe Agentic Browsing**
 
-> **Publisher:** [CybrLab AI](https://cybrlab.ai) | **Service:** [urlcheck.ai](https://urlcheck.ai)
+> **Publisher:** [CybrLab AI](https://cybrlab.ai) | **Service:** [urlcheck.ai](https://urlcheck.dev)
 
 ---
 
@@ -574,5 +574,5 @@ Transport-level rate limiting returns HTTP 429 without a JSON-RPC body.
 
 For API keys, support, or questions:
 - **Publisher**: [CybrLab AI](https://cybrlab.ai)
-- **Service**: [urlcheck.ai](https://urlcheck.ai)
+- **Service**: [urlcheck.ai](https://urlcheck.dev)
 - **Email**: contact@cybrlab.ai
