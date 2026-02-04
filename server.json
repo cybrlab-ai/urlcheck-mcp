@@ -34,7 +34,7 @@
   "tools": [
     {
       "name": "url_scanner_scan",
-      "description": "Analyze a URL for security threats including phishing, malware, and suspicious patterns. Returns risk score, confidence, and agent access guidance.",
+      "description": "Analyze a URL for security threats including phishing, malware, and suspicious patterns. Supports direct (sync) and task-augmented (async) execution. Returns risk score, confidence, and agent access guidance.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -48,7 +48,7 @@
     },
     {
       "name": "url_scanner_scan_with_intent",
-      "description": "Analyze a URL for security threats with user intent context. Use when the user states their purpose (e.g., login, purchase, booking)—this enables detection of sites that don't match the stated intent. Returns risk score, confidence, and agent access guidance.",
+      "description": "Analyze a URL for security threats with user intent context. Supports direct (sync) and task-augmented (async) execution. Use when the user states their purpose (e.g., login, purchase, booking)—this enables detection of sites that don't match the stated intent. Returns risk score, confidence, and agent access guidance.",
       "inputSchema": {
         "type": "object",
         "properties": {
