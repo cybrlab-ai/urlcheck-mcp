@@ -65,7 +65,7 @@ curl -X POST https://urlcheck.ai/mcp \
 
 ### 3. Start a Scan
 
-`url_scanner_scan` supports two execution modes:
+`url_scanner_scan` supports two execution modes (the same modes apply to `url_scanner_scan_with_intent`):
 - **Task-augmented (recommended)**: Include the `task` parameter for async execution
 - **Direct**: Omit the `task` parameter for synchronous execution
 
@@ -111,6 +111,31 @@ Response (task submitted):
 }
 ```
 
+Optional: Provide an url visiting intent for additional context (recommended but not required):
+
+```bash
+curl -X POST https://urlcheck.ai/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "MCP-Protocol-Version: 2025-06-18" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 3,
+    "method": "tools/call",
+    "params": {
+      "name": "url_scanner_scan_with_intent",
+      "arguments": {
+        "url": "https://example.com",
+        "intent": "Book a hotel room"
+      },
+      "task": {
+        "ttl": 720000
+      }
+    }
+  }'
+```
+
 ### 4. Poll for Results
 
 ```bash
@@ -153,9 +178,10 @@ Response (completed task with agent directive):
 
 ## Available Tools
 
-| Tool               | Description                      | Execution Modes             |
-|--------------------|----------------------------------|-----------------------------|
-| `url_scanner_scan` | Analyze URL for security threats | Direct (sync), Task (async) |
+| Tool                           | Description                              | Execution Modes             |
+|--------------------------------|------------------------------------------|-----------------------------|
+| `url_scanner_scan`             | Analyze URL for security threats         | Direct (sync), Task (async) |
+| `url_scanner_scan_with_intent` | Analyze URL with optional intent context | Direct (sync), Task (async) |
 
 See [Full API Documentation](docs/API.md) for detailed schemas and examples.
 

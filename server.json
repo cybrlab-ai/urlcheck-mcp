@@ -45,6 +45,24 @@
         },
         "required": ["url"]
       }
+    },
+    {
+      "name": "url_scanner_scan_with_intent",
+      "description": "Analyze a URL for security threats with optional url visiting intent. Returns risk score, confidence, and agent access guidance.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The URL to analyze. Must be HTTP or HTTPS. If no scheme provided, https:// is assumed."
+          },
+          "intent": {
+            "type": "string",
+            "description": "Optional intent for visiting the URL. Recommended to provide additional context."
+          }
+        },
+        "required": ["url"]
+      }
     }
   ],
   "capabilities": {

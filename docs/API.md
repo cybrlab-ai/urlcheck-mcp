@@ -13,6 +13,7 @@
 3. [Transport & Connection](#transport--connection)
 4. [Tools Reference](#tools-reference)
    - [url_scanner_scan](#url_scanner_scan)
+   - [url_scanner_scan_with_intent](#url_scanner_scan_with_intent)
    - [tasks/get](#tasksget)
    - [tasks/result](#tasksresult)
    - [tasks/list](#taskslist)
@@ -219,6 +220,56 @@ Omit the `task` parameter for synchronous execution:
 **Direct Call Timeout:** Direct calls have a wait timeout capped at **300 seconds (5 minutes)**.
 
 For scans that may exceed 5 minutes, use task-augmented calls with polling.
+
+---
+
+### url_scanner_scan_with_intent
+
+Start a URL security scan with optional user intent context. This tool behaves like `url_scanner_scan`
+but accepts a recommended `intent` field that can significantly improve accuracy when aligned with substantive page evidence.
+
+If `intent` is omitted or empty, the scan proceeds normally.
+
+**Max intent length:** 1024 characters.
+
+#### Input Schema
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "url": {
+      "type": "string",
+      "description": "The URL to analyze. Must be HTTP or HTTPS. If no scheme provided, https:// is assumed."
+    },
+    "intent": {
+      "type": "string",
+      "description": "Optional user intent for visiting the URL. Recommended for additional context."
+    }
+  },
+  "required": ["url"]
+}
+```
+
+#### Example Request (Task-Augmented)
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "url_scanner_scan_with_intent",
+    "arguments": {
+      "url": "https://example.com",
+      "intent": "Book a hotel room"
+    },
+    "task": {
+      "ttl": 720000
+    }
+  }
+}
+```
 
 ---
 
@@ -441,6 +492,8 @@ Tool invocation and task operations return JSON-RPC errors (no tool-level `isErr
 
 Common cases:
 - `url_scanner_scan` missing `url` → `-32602 Invalid params`
+- `url_scanner_scan_with_intent` missing `url` → `-32602 Invalid params`
+- `url_scanner_scan_with_intent` intent too long (>1024 chars) → `-32602 Invalid params`
 - Queue full → `-32603 Internal error` with `"Server busy: ..."`
 - Per-key task quota exceeded → `-32029` with `"Rate limit exceeded: ..."`
 - Invalid `taskId` for `tasks/get`, `tasks/result`, or `tasks/cancel` → `-32602`
