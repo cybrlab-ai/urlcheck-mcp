@@ -48,7 +48,7 @@
     },
     {
       "name": "url_scanner_scan_with_intent",
-      "description": "Analyze a URL for security threats with optional url visiting intent. Returns risk score, confidence, and agent access guidance.",
+      "description": "Analyze a URL for security threats with user intent context. Use when the user states their purpose (e.g., login, purchase, booking)—this enables detection of sites that don't match the stated intent. Returns risk score, confidence, and agent access guidance.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -58,7 +58,7 @@
           },
           "intent": {
             "type": "string",
-            "description": "Optional intent for visiting the URL. Recommended to provide additional context."
+            "description": "User's stated purpose for visiting the URL (e.g., 'login to email', 'book a hotel', 'download software'). Max 248 characters."
           }
         },
         "required": ["url"]

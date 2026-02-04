@@ -228,9 +228,12 @@ For scans that may exceed 5 minutes, use task-augmented calls with polling.
 Start a URL security scan with optional user intent context. This tool behaves like `url_scanner_scan`
 but accepts a recommended `intent` field that can significantly improve accuracy when aligned with substantive page evidence.
 
+Recommended use: provide `intent` when the user can state their purpose (e.g., login, purchase, booking, payments, file download).
+This helps compare intended purpose against observed page content.
+
 If `intent` is omitted or empty, the scan proceeds normally.
 
-**Max intent length:** 1024 characters.
+**Max intent length:** 248 characters.
 
 #### Input Schema
 
@@ -493,7 +496,7 @@ Tool invocation and task operations return JSON-RPC errors (no tool-level `isErr
 Common cases:
 - `url_scanner_scan` missing `url` → `-32602 Invalid params`
 - `url_scanner_scan_with_intent` missing `url` → `-32602 Invalid params`
-- `url_scanner_scan_with_intent` intent too long (>1024 chars) → `-32602 Invalid params`
+- `url_scanner_scan_with_intent` intent too long (>248 chars) → `-32602 Invalid params`
 - Queue full → `-32603 Internal error` with `"Server busy: ..."`
 - Per-key task quota exceeded → `-32029` with `"Rate limit exceeded: ..."`
 - Invalid `taskId` for `tasks/get`, `tasks/result`, or `tasks/cancel` → `-32602`

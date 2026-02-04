@@ -136,6 +136,8 @@ curl -X POST https://urlcheck.ai/mcp \
   }'
 ```
 
+Recommendation: Use `url_scanner_scan_with_intent` when you can state your purpose (login, purchase, booking, payments, file download)—this enables detection of sites that don't match the stated intent. Otherwise use `url_scanner_scan`.
+
 ### 4. Poll for Results
 
 ```bash
