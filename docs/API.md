@@ -1,8 +1,8 @@
-# URL Scanner MCP Server - API Documentation
+# URLCheck MCP Server - API Documentation
 
 > **High-accuracy MCP-native URL scanner for Safe Agentic Browsing**
 
-> **Publisher:** [CybrLab AI](https://cybrlab.ai) | **Service:** [urlcheck.ai](https://urlcheck.dev)
+> **Publisher:** [CybrLab.ai](https://cybrlab.ai) | **Service:** [URLCheck](https://urlcheck.dev)
 
 ---
 
@@ -33,7 +33,7 @@
 
 ## Overview
 
-The URL Scanner MCP Server provides AI-powered malicious URL detection through the Model Context Protocol (MCP). 
+The URLCheck MCP Server provides AI-powered malicious URL detection through the Model Context Protocol (MCP). 
 
 ### Key Characteristics
 
@@ -629,6 +629,6 @@ Transport-level rate limiting returns HTTP 429 without a JSON-RPC body.
 ## Support
 
 For API keys, support, or questions:
-- **Publisher**: [CybrLab AI](https://cybrlab.ai)
-- **Service**: [urlcheck.ai](https://urlcheck.dev)
+- **Publisher**: [CybrLab.ai](https://cybrlab.ai)
+- **Service**: [URLCheck](https://urlcheck.dev)
 - **Email**: contact@cybrlab.ai

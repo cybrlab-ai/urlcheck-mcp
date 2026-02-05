@@ -1,14 +1,29 @@
-# URL Security Scanner MCP Server
+# URLCheck MCP Server
 
-> **High-accuracy MCP-native URL scanner for Safe Agentic Browsing**
+> **High-accuracy, MCP-native URL and web page security scanner for safe agentic browsing.*
 
-**Publisher:** [CybrLab AI](https://cybrlab.ai) | **Service:** [urlcheck.ai](https://urlcheck.dev)
+**Publisher:** [CybrLab.ai](https://cybrlab.ai) | **Service:** [URLCheck](https://urlcheck.dev)
+
+---
+
+## Repository Rename Notice
+
+This repository was renamed from `cybrlab-ai/url-scanner-mcp` to `cybrlab-ai/urlcheck-mcp`.
+
+- Canonical repository URL: `https://github.com/cybrlab-ai/urlcheck-mcp`
+- Canonical Git remote: `git@github.com:cybrlab-ai/urlcheck-mcp.git`
+- GitHub Action consumers must update `uses:` references to `cybrlab-ai/urlcheck-mcp@...` (old action paths are not guaranteed to redirect)
+- Collaborators should update local remotes:
+  - `git remote set-url origin git@github.com:cybrlab-ai/urlcheck-mcp.git`
+  - `git fetch origin --verbose`
+
+Do not create a new repository at the old name (`url-scanner-mcp`) to avoid breaking GitHub redirect behavior.
 
 ---
 
 ## Overview
 
-The URL Security Scanner is an MCP (Model Context Protocol) server that provides AI agents with the ability to analyze URLs for malicious content and security threats before navigation.
+URLCheck is an MCP server that enables AI agents and any MCP-compatible client to analyze URLs for malicious content and security threats before navigation.
 
 ## Important Notice
 
@@ -31,7 +46,7 @@ Add to your MCP client configuration:
 ```json
 {
   "mcpServers": {
-    "url-scanner": {
+    "urlcheck-mcp": {
       "transport": "streamable-http",
       "url": "https://urlcheck.ai/mcp",
       "headers": {
@@ -137,6 +152,7 @@ curl -X POST https://urlcheck.ai/mcp \
 ```
 
 Recommendation: Use `url_scanner_scan_with_intent` when you can state your purpose (login, purchase, booking, payments, file download)—this enables detection of sites that don't match the stated intent. Otherwise use `url_scanner_scan`.
+Max intent length: 248 characters.
 
 ### 4. Poll for Results
 
@@ -213,8 +229,8 @@ See [Authentication Guide](docs/AUTHENTICATION.md) for details on getting API ke
 
 ## Support
 
-- **Publisher**: [CybrLab AI](https://cybrlab.ai)
-- **Service**: [urlcheck.ai](https://urlcheck.dev)
+- **Publisher**: [CybrLab.ai](https://cybrlab.ai)
+- **Service**: [URLCheck](https://urlcheck.dev)
 - **Email**: contact@cybrlab.ai
 
 ---
@@ -223,4 +239,4 @@ See [Authentication Guide](docs/AUTHENTICATION.md) for details on getting API ke
 
 Apache License 2.0 - See [LICENSE](LICENSE) for details.
 
-Copyright CybrLab AI
+Copyright CybrLab.ai

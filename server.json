@@ -1,17 +1,17 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "cybrlab-ai/url-scanner",
-  "title": "CybrLab AI URL Security Scanner",
-  "description": "Malicious URL detection for Safe Agentic Browsing.",
+  "name": "cybrlab-ai/urlcheck-mcp",
+  "title": "High-accuracy, MCP-native URL and web page security scanner for safe agentic browsing.",
+  "description": "Protects AI Agents and Automated Workflows.",
   "version": "0.1.0",
-  "websiteUrl": "https://urlcheck.ai",
+  "websiteUrl": "https://urlcheck.dev",
   "publisher": {
-    "name": "CybrLab AI",
+    "name": "CybrLab.ai",
     "url": "https://cybrlab.ai"
   },
   "repository": {
     "source": "github",
-    "url": "https://github.com/cybrlab-ai/url-scanner-mcp"
+    "url": "https://github.com/cybrlab-ai/urlcheck-mcp"
   },
   "license": "Apache-2.0",
   "privacyPolicyUrl": "https://cybrlab.ai/privacy-policy",

@@ -2,13 +2,13 @@
 
 > How to get and use API keys for the URL Security Scanner MCP Server
 
-**Publisher:** [CybrLab AI](https://cybrlab.ai) | **Service:** [urlcheck.ai](https://urlcheck.dev)
+**Publisher:** [CybrLab.ai](https://cybrlab.ai) | **Service:** [URLCheck](https://urlcheck.dev)
 
 ---
 
 ## API Key Authentication
 
-All requests to the URL Security Scanner require authentication via the `X-API-Key` header.
+All requests to the URLCheck require authentication via the `X-API-Key` header.
 
 ### Request Format
 
@@ -70,10 +70,10 @@ curl -X POST https://urlcheck.ai/mcp \
 
 ### For Production Use
 
-Contact CybrLab AI to get production API keys:
+Contact CybrLab.ai to get production API keys:
 
 - **Email**: contact@cybrlab.ai
-- **Website**: [cybrlab.ai](https://cybrlab.ai)
+- **Website**: [CybrLab.ai](https://cybrlab.ai)
 
 ### For Testing/Evaluation
 
@@ -109,5 +109,5 @@ Content-Type: text/plain
 
 For API key issues or quota increases:
 
-- **Publisher**: [CybrLab AI](https://cybrlab.ai)
+- **Publisher**: [CybrLab.ai](https://cybrlab.ai)
 - **Email**: contact@cybrlab.ai
