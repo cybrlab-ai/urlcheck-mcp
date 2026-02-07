@@ -8,7 +8,12 @@
 
 ## API Key Authentication
 
-All requests to the URLCheck require authentication via the `X-API-Key` header.
+Authentication requirements depend on deployment mode:
+
+- Hosted endpoint (`https://urlcheck.ai/mcp`): API key is optional for up to 100 requests/day.
+- Hosted endpoint above trial quota: API key required.
+
+When using an API key, send it via the `X-API-Key` header.
 
 ### Request Format
 
@@ -22,6 +27,8 @@ MCP-Protocol-Version: 2025-06-18
 
 {...}
 ```
+
+If you are using hosted anonymous trial access, omit `X-API-Key` and stay within trial quota.
 
 **Stateful mode only:** If `server.stateful_mode = true`, include `Mcp-Session-Id` header after `initialize`.
 
@@ -79,6 +86,11 @@ Contact CybrLab.ai to get production API keys:
 
 Contact us for evaluation keys with limited quotas for testing purposes.
 
+### Fastest Path
+
+- Start immediately with hosted trial access (no key) for up to 100 requests/day.
+- Request an API key at contact@cybrlab.ai for higher limits and stable authenticated quotas.
+
 ---
 
 ## Authentication Errors
@@ -86,11 +98,11 @@ Contact us for evaluation keys with limited quotas for testing purposes.
 Authentication failures return **plain HTTP responses** (not JSON-RPC). The
 response body is empty.
 
-| HTTP Status | Response Type | Body        | Description                      |
-|-------------|---------------|-------------|----------------------------------|
-| 401         | Empty body    | n/a         | Missing/invalid/expired API key  |
-| 403         | Empty body    | n/a         | Origin or IP blocked             |
-| 429         | Empty body    | n/a         | Transport rate limited           |
+| HTTP Status | Response Type | Body | Description                                     |
+|-------------|---------------|------|-------------------------------------------------|
+| 401         | Empty body    | n/a  | Missing/invalid/expired API key (when required) |
+| 403         | Empty body    | n/a  | Origin or IP blocked                            |
+| 429         | Empty body    | n/a  | Transport rate limited                          |
 
 ### Error Response Example
 

@@ -46,7 +46,10 @@ The URLCheck MCP Server provides AI-powered malicious URL detection through the 
 
 ## Authentication
 
-All API requests require authentication via the `X-API-Key` header.
+Authentication requirements depend on deployment mode:
+
+- Hosted endpoint (`https://urlcheck.ai/mcp`): API key is optional for up to 100 requests/day.
+- Hosted endpoint above trial quota: API key required.
 
 ```http
 X-API-Key: your-api-key-here
@@ -68,13 +71,13 @@ X-API-Key: your-api-key-here
 
 ### Required Headers
 
-| Header                 | Required                    | Description                                                           |
-|------------------------|-----------------------------|-----------------------------------------------------------------------|
-| `Content-Type`         | POST                        | Must be `application/json`                                            |
-| `Accept`               | POST/GET                    | POST: `application/json, text/event-stream`; GET: `text/event-stream` |
-| `X-API-Key`            | All                         | Your API key for authentication                                       |
-| `Mcp-Session-Id`       | Stateful                    | Session ID returned by `initialize`                                   |
-| `MCP-Protocol-Version` | All non-initialize requests | Protocol version (e.g., `2025-06-18`)                                 |
+| Header                 | Required                                                       | Description                                                           |
+|------------------------|----------------------------------------------------------------|-----------------------------------------------------------------------|
+| `Content-Type`         | POST                                                           | Must be `application/json`                                            |
+| `Accept`               | POST/GET                                                       | POST: `application/json, text/event-stream`; GET: `text/event-stream` |
+| `X-API-Key`            | Hosted: optional up to trial quota; required above trial quota | API key for authenticated usage tiers                                 |
+| `Mcp-Session-Id`       | Stateful                                                       | Session ID returned by `initialize`                                   |
+| `MCP-Protocol-Version` | All non-initialize requests                                    | Protocol version (e.g., `2025-06-18`)                                 |
 
 ### Session Management
 
@@ -442,7 +445,7 @@ The MCP server follows the MCP 2025-06-18 specification for HTTP status codes.
 | Code | Status                 | When Returned                                           |
 |------|------------------------|---------------------------------------------------------|
 | 400  | Bad Request            | Invalid JSON, missing headers, invalid protocol version |
-| 401  | Unauthorized           | Missing or invalid `X-API-Key` header                   |
+| 401  | Unauthorized           | Missing/invalid `X-API-Key` when authentication is required |
 | 403  | Forbidden              | CORS origin rejected or IP blocked                      |
 | 404  | Not Found              | Unknown/expired session ID, wrong endpoint              |
 | 413  | Payload Too Large      | Request body exceeds size limit                         |
@@ -459,7 +462,7 @@ The MCP server follows the MCP 2025-06-18 specification for HTTP status codes.
 
 ### Example Error Responses
 
-**401 Unauthorized** (missing API key):
+**401 Unauthorized** (missing API key when auth is required):
 
 Authentication failures return HTTP responses without a JSON-RPC body:
 ```
@@ -546,13 +549,13 @@ Malformed requests (missing `url` or wrong types) still return `-32602 Invalid p
 
 **Note:** Authentication errors return plain HTTP responses (not JSON-RPC envelopes).
 
-| HTTP Status | Response Type | Body         | Description             |
-|-------------|---------------|--------------|-------------------------|
-| 401         | Empty body    | —            | No API key provided     |
-| 401         | Empty body    | —            | API key not recognized  |
-| 401         | Empty body    | —            | API key has expired     |
-| 403         | Empty body    | —            | CORS origin rejected    |
-| 429         | Empty body    | —            | Transport rate limited  |
+| HTTP Status | Response Type | Body | Description                         |
+|-------------|---------------|------|-------------------------------------|
+| 401         | Empty body    | —    | No API key provided (when required) |
+| 401         | Empty body    | —    | API key not recognized              |
+| 401         | Empty body    | —    | API key has expired                 |
+| 403         | Empty body    | —    | CORS origin rejected                |
+| 429         | Empty body    | —    | Transport rate limited              |
 
 ### Request Validation Errors (Request-Level)
 
@@ -586,6 +589,14 @@ Task execution failures are returned as JSON-RPC errors with a message string on
 ## Rate Limits & Quotas
 
 The API enforces rate limits to ensure fair usage and service availability. Limits may be adjusted without notice based on operational requirements.
+
+### Hosted Trial Limit (`urlcheck.ai`)
+
+| Limit            | Description                                      |
+|------------------|--------------------------------------------------|
+| 100 requests/day | Anonymous access (no API key) on hosted endpoint |
+
+Above trial quota, use an API key.
 
 ### Per-API-Key Limits
 

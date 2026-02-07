@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-02-07
+
+- Clarified authentication model across public docs:
+  - Hosted `https://urlcheck.ai/mcp`: API key optional for up to 100 requests/day.
+  - Above hosted trial quota: API key required.
+- Updated `server.json` remote header metadata to mark `X-API-Key` as optional for hosted trial usage.
+
 ## 2026-02-05
 
 - Added free tier notice: No API key required for up to 100 requests per day.

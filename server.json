@@ -23,8 +23,8 @@
       "headers": [
         {
           "name": "X-API-Key",
-          "description": "API key for authentication. Contact contact@cybrlab.ai to obtain one.",
-          "isRequired": true,
+          "description": "Optional for hosted trial access (up to 100 requests/day). Required for higher limits.",
+          "isRequired": false,
           "isSecret": true,
           "placeholder": "<your-api-key>"
         }

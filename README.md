@@ -4,7 +4,7 @@
 
 **Publisher:** [CybrLab.ai](https://cybrlab.ai) | **Service:** [URLCheck](https://urlcheck.dev)
 
-**Free Tier:** No API key required for up to 100 requests per day. For higher volumes, contact [contact@cybrlab.ai](mailto:contact@cybrlab.ai).
+**Hosted Trial Tier:** No API key required for up to 100 requests/day. For higher limits and stable quotas, use an API key (contact [contact@cybrlab.ai](mailto:contact@cybrlab.ai)).
 
 ---
 
@@ -27,6 +27,13 @@ Do not create a new repository at the old name (`url-scanner-mcp`) to avoid brea
 
 URLCheck is an MCP server that enables AI agents and any MCP-compatible client to analyze URLs for malicious content and security threats before navigation.
 
+## Authentication Modes
+
+| Deployment                         | `X-API-Key` Requirement         | Notes                                 |
+|------------------------------------|---------------------------------|---------------------------------------|
+| Hosted (`https://urlcheck.ai/mcp`) | Optional up to 100 requests/day | API key recommended for higher limits |
+| Hosted (`https://urlcheck.ai/mcp`) | Required above trial quota      | Contact support for provisioned keys  |
+
 ## Important Notice
 
 This tool is intended for authorized security assessment only. Use it solely on systems or websites that you own or for which you have got explicit permission to assess. Any unauthorized, unlawful, or malicious use is strictly prohibited. You are responsible for ensuring compliance with all applicable laws, regulations, and contractual obligations.
@@ -43,7 +50,22 @@ This tool is intended for authorized security assessment only. Use it solely on 
 
 ### 1. Configure Your MCP Client
 
-Add to your MCP client configuration:
+Choose one option:
+
+Trial (hosted, up to 100 requests/day without API key):
+
+```json
+{
+  "mcpServers": {
+    "urlcheck-mcp": {
+      "transport": "streamable-http",
+      "url": "https://urlcheck.ai/mcp"
+    }
+  }
+}
+```
+
+Authenticated (recommended for stable and higher-volume usage):
 
 ```json
 {
@@ -209,7 +231,10 @@ See [Full API Documentation](docs/API.md) for detailed schemas and examples.
 
 ## Authentication
 
-All requests require an API key via the `X-API-Key` header.
+Authentication requirements depend on deployment mode:
+
+- Hosted endpoint (`https://urlcheck.ai/mcp`): API key is optional for up to 100 requests/day.
+- Hosted endpoint above trial quota: API key required.
 
 See [Authentication Guide](docs/AUTHENTICATION.md) for details on getting API keys.
 
