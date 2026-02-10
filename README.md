@@ -1,6 +1,6 @@
 # URLCheck MCP Server
 
-> **High-accuracy, MCP-native URL and web page security scanner for safe agentic browsing.*
+> **MCP-native URL security scanner that protects AI agent workflows — analyzes threats and verifies URLs align with the agent's intended goal.**
 
 **Publisher:** [CybrLab.ai](https://cybrlab.ai) | **Service:** [URLCheck](https://urlcheck.dev)
 
@@ -26,6 +26,14 @@ Do not create a new repository at the old name (`url-scanner-mcp`) to avoid brea
 ## Overview
 
 URLCheck is an MCP server that enables AI agents and any MCP-compatible client to analyze URLs for malicious content and security threats before navigation.
+
+## OpenClaw Quick Start (Manual-First)
+
+OpenClaw users can connect URLCheck through their existing MCP bridge/adapter plugin.
+
+- Setup guide: [OpenClaw Setup](docs/OPENCLAW_SETUP.md)
+- No ClawHub skill required
+- Hosted endpoint: `https://urlcheck.ai/mcp`
 
 ## Authentication Modes
 
@@ -242,15 +250,16 @@ See [Authentication Guide](docs/AUTHENTICATION.md) for details on getting API ke
 
 ## Technical Specifications
 
-| Property          | Value                     |
-|-------------------|---------------------------|
-| MCP Spec          | 2025-06-18                |
-| Client Protocol   | 2025-06-18                |
-| Transport         | Streamable HTTP           |
-| Endpoint          | `https://urlcheck.ai/mcp` |
-| Typical Scan Time | Varies by target          |
-| Supported Schemes | HTTP, HTTPS               |
-| Max URL Length    | Enforced by server        |
+| Property          | Value                      |
+|-------------------|----------------------------|
+| Registry ID       | `ai.urlcheck/urlcheck-mcp` |
+| MCP Spec          | 2025-06-18                 |
+| Client Protocol   | 2025-06-18                 |
+| Transport         | Streamable HTTP            |
+| Endpoint          | `https://urlcheck.ai/mcp`  |
+| Typical Scan Time | Varies by target           |
+| Supported Schemes | HTTP, HTTPS                |
+| Max URL Length    | Enforced by server         |
 
 ---
 

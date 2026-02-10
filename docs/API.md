@@ -110,6 +110,21 @@ curl -X POST https://urlcheck.ai/mcp \
 
 ## Tools Reference
 
+### Tool Safety Annotations
+
+The two scanner tools are declared as read-only in `server.json`:
+
+- `readOnlyHint: true`
+- `destructiveHint: false`
+- `openWorldHint: true`
+
+These annotations are included for:
+
+- `url_scanner_scan`
+- `url_scanner_scan_with_intent`
+
+These same annotations are also returned by the live MCP server in `tools/list` responses.
+
 ### url_scanner_scan
 
 Start a URL security scan. Supports both task-augmented (async) and direct (sync) execution modes.

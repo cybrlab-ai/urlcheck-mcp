@@ -1,11 +1,23 @@
 # Changelog
 
+## 2026-02-10
+
+- Updated MCP registry server identifier to DNS namespace format: `ai.urlcheck/urlcheck-mcp`.
+- Added explicit tool safety annotations in `server.json` for both scanner tools:
+  - `readOnlyHint: true`
+  - `destructiveHint: false`
+  - `openWorldHint: true`
+- Aligned runtime MCP metadata so `tools/list` now returns the same safety annotations for both scanner tools.
+
 ## 2026-02-07
 
 - Clarified authentication model across public docs:
   - Hosted `https://urlcheck.ai/mcp`: API key optional for up to 100 requests/day.
   - Above hosted trial quota: API key required.
 - Updated `server.json` remote header metadata to mark `X-API-Key` as optional for hosted trial usage.
+- Added manual-first OpenClaw onboarding guide:
+  - `docs/OPENCLAW_SETUP.md`
+  - Linked from public `README.md` as the recommended OpenClaw setup path.
 
 ## 2026-02-05
 
