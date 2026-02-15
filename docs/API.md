@@ -235,9 +235,14 @@ Omit the `task` parameter for synchronous execution:
 }
 ```
 
-**Direct Call Timeout:** Direct calls have a wait timeout capped at **300 seconds (5 minutes)**.
+**Direct Call Timeout:** Direct calls have a server-side wait timeout (deployment-configured; hosted default is **100 seconds**).
 
-For scans that may exceed 5 minutes, use task-augmented calls with polling.
+On direct-call timeout, the server returns JSON-RPC `-32603` with:
+- `data.taskId` (use for recovery polling)
+- `data.pollInterval` (recommended polling interval, ms)
+
+For scans that may exceed this window, prefer task-augmented calls with polling.
+If an upstream edge/proxy timeout fires first (for example Cloudflare 524), this timeout payload may not reach the client.
 
 ---
 
@@ -337,7 +342,7 @@ Get task status (non-blocking). Task IDs are scoped to the API key that created 
 
 Wait for task completion and return the tool result.
 
-**Note:** The server enforces a maximum wait time of **300 seconds**. If the task is still running after this timeout, `tasks/result` returns a JSON-RPC error (`-32603`) so clients can retry or fall back to polling with `tasks/get`.
+**Note:** The server enforces the same wait timeout as direct calls (hosted default **100 seconds**). If the task is still running after this timeout, `tasks/result` returns a JSON-RPC error (`-32603`). Since the client already has the `taskId`, it can fall back to polling with `tasks/get`.
 
 #### Input Schema
 
@@ -457,15 +462,15 @@ The MCP server follows the MCP 2025-06-18 specification for HTTP status codes.
 
 ### Client Error Codes (4xx)
 
-| Code | Status                 | When Returned                                           |
-|------|------------------------|---------------------------------------------------------|
-| 400  | Bad Request            | Invalid JSON, missing headers, invalid protocol version |
+| Code | Status                 | When Returned                                               |
+|------|------------------------|-------------------------------------------------------------|
+| 400  | Bad Request            | Invalid JSON, missing headers, invalid protocol version     |
 | 401  | Unauthorized           | Missing/invalid `X-API-Key` when authentication is required |
-| 403  | Forbidden              | CORS origin rejected or IP blocked                      |
-| 404  | Not Found              | Unknown/expired session ID, wrong endpoint              |
-| 413  | Payload Too Large      | Request body exceeds size limit                         |
-| 415  | Unsupported Media Type | Missing or wrong `Content-Type` header                  |
-| 429  | Too Many Requests      | Rate limit exceeded                                     |
+| 403  | Forbidden              | CORS origin rejected or IP blocked                          |
+| 404  | Not Found              | Unknown/expired session ID, wrong endpoint                  |
+| 413  | Payload Too Large      | Request body exceeds size limit                             |
+| 415  | Unsupported Media Type | Missing or wrong `Content-Type` header                      |
+| 429  | Too Many Requests      | Rate limit exceeded                                         |
 
 ### Server Error Codes (5xx)
 
@@ -517,6 +522,7 @@ Common cases:
 - `url_scanner_scan_with_intent` intent too long (>248 chars) → `-32602 Invalid params`
 - Queue full → `-32603 Internal error` with `"Server busy: ..."`
 - Per-key task quota exceeded → `-32029` with `"Rate limit exceeded: ..."`
+- Direct-call wait timeout → `-32603` with timeout message and `data.taskId` / `data.pollInterval`
 - Invalid `taskId` for `tasks/get`, `tasks/result`, or `tasks/cancel` → `-32602`
 - Task execution failures (failed/expired/cancelled) → JSON-RPC errors with message string
 

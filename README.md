@@ -191,6 +191,8 @@ curl -X POST https://urlcheck.ai/mcp \
 Recommendation: Use `url_scanner_scan_with_intent` when you can state your purpose (login, purchase, booking, payments, file download)—this enables detection of sites that don't match the stated intent. Otherwise use `url_scanner_scan`.
 Max intent length: 248 characters.
 
+Direct-call timeout note: synchronous tool calls use a bounded server wait window (hosted default 100s). If timeout is reached, the server returns JSON-RPC `-32603` with `error.data.taskId` and `error.data.pollInterval` so you can continue via `tasks/get` / `tasks/result`.
+
 ### 4. Poll for Results
 
 ```bash

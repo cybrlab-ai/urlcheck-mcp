@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-02-15
+
+- Changed default `wait_timeout_secs` from 300 to 100 seconds for direct calls and `tasks/result` blocking wait.
+- Documented JSON-RPC `-32603` timeout recovery payload (`data.taskId`, `data.pollInterval`) in API docs and README.
+
 ## 2026-02-10
 
 - Updated MCP registry server identifier to DNS namespace format: `ai.urlcheck/urlcheck-mcp`.

@@ -3,7 +3,7 @@
   "name": "ai.urlcheck/urlcheck-mcp",
   "title": "MCP-native URL security scanner that protects AI agent workflows.",
   "description": "Analyzes threats and verifies URLs align with the agent's intended goal.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "websiteUrl": "https://urlcheck.dev",
   "publisher": {
     "name": "CybrLab.ai",
